@@ -1,24 +1,22 @@
-import { Directive, ElementRef, Input, OnChanges, inject } from '@angular/core'
+import { Component, Input, OnChanges } from '@angular/core'
 import { ValidationErrors } from '@angular/forms'
 
-@Directive({
-  selector: '[appControlErrors]',
+@Component({
+  selector: 'app-control-errors',
   standalone: true,
+  imports: [],
+  templateUrl: './control-errors.component.html',
+  styles: ``,
 })
-export class ControlErrorsDirective implements OnChanges {
-  private readonly elementRef = inject(ElementRef<HTMLInputElement>)
-
-  @Input({ alias: 'appControlErrors', required: true })
-  errors: ValidationErrors | null = null
+export class ControlErrorsComponent implements OnChanges {
+  @Input({ required: true }) errors: ValidationErrors | null = null
   @Input({ required: true }) touched!: boolean
 
-  get element(): HTMLInputElement {
-    return this.elementRef.nativeElement
-  }
+  errorMessage = ''
 
   ngOnChanges(): void {
     if (this.touched) {
-      this.element.textContent = this.parseErrors(this.errors)
+      this.errorMessage = this.parseErrors(this.errors)
     }
   }
 
