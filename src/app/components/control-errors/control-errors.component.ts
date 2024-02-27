@@ -1,12 +1,12 @@
 import { Component, Input, OnChanges } from '@angular/core'
 import { ValidationErrors } from '@angular/forms'
+import { fadeAnimation } from '../../animations/fade.animation'
 
 @Component({
   selector: 'app-control-errors',
   standalone: true,
-  imports: [],
   templateUrl: './control-errors.component.html',
-  styles: ``,
+  animations: [fadeAnimation()],
 })
 export class ControlErrorsComponent implements OnChanges {
   @Input({ required: true }) errors: ValidationErrors | null = null

@@ -1,5 +1,6 @@
 @if (loading$ | async) {
   <div
+    @fade
     class="absolute left-0 top-0 z-50 flex h-dvh w-dvw cursor-progress items-center justify-center bg-black/50 text-white"
   >
     <svg

@@ -1,1 +1,3 @@
-<div class="mt-1 text-xs text-red-500">{{ errorMessage }}</div>
+@if (errorMessage) {
+  <div @fade class="mt-1 text-xs text-red-500">{{ errorMessage }}</div>
+}
