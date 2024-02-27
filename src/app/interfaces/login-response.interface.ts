@@ -1,9 +1,6 @@
-export interface LoginResponse {
-  _id: string
-  email: string
-  name: string
-  isActive: boolean
-  role: string
+import { User } from './user.interface'
+
+export interface LoginResponse extends User {
   token: string
   refresh: string
 }
