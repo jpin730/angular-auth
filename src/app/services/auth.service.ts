@@ -3,7 +3,6 @@ import { Injectable, inject } from '@angular/core'
 import { Observable, catchError, finalize, throwError } from 'rxjs'
 import { environment } from '../../environments/environment'
 import { LoginResponse } from '../interfaces/login-response.interface'
-import { CapitalizePipe } from '../pipes/capitalize.pipe'
 import { LoaderService } from './loader.service'
 import { NotificationService } from './notification.service'
 
@@ -14,12 +13,12 @@ export class AuthService {
   private readonly http = inject(HttpClient)
   private readonly loaderService = inject(LoaderService)
   private readonly notificationService = inject(NotificationService)
-  private readonly capitalizePipe = inject(CapitalizePipe)
 
   private readonly baseUrl = environment.apiBaseUrl
 
   login(email: string, password: string): Observable<LoginResponse> {
     this.loaderService.show()
+    this.notificationService.hide()
     return this.http
       .post<LoginResponse>(`${this.baseUrl}/auth/login`, {
         email,
@@ -38,9 +37,7 @@ export class AuthService {
 
     if (message) {
       this.notificationService.show(
-        this.capitalizePipe.transform(
-          Array.isArray(message) ? message.join(', ') : message,
-        ),
+        Array.isArray(message) ? message.join(', ') : message,
       )
     } else {
       this.notificationService.show(
