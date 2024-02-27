@@ -15,10 +15,6 @@ export class NotificationService {
     return this.messageSubject.asObservable()
   }
 
-  constructor() {
-    this.show('Test notification message')
-  }
-
   show(message: string): void {
     this.messageSubject.next(message)
 
