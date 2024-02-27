@@ -1,9 +1,11 @@
-import { HttpClient } from '@angular/common/http'
+import { HttpClient, HttpErrorResponse } from '@angular/common/http'
 import { Injectable, inject } from '@angular/core'
-import { Observable, finalize } from 'rxjs'
+import { Observable, catchError, finalize, throwError } from 'rxjs'
 import { environment } from '../../environments/environment'
 import { LoginResponse } from '../interfaces/login-response.interface'
+import { CapitalizePipe } from '../pipes/capitalize.pipe'
 import { LoaderService } from './loader.service'
+import { NotificationService } from './notification.service'
 
 @Injectable({
   providedIn: 'root',
@@ -11,6 +13,8 @@ import { LoaderService } from './loader.service'
 export class AuthService {
   private readonly http = inject(HttpClient)
   private readonly loaderService = inject(LoaderService)
+  private readonly notificationService = inject(NotificationService)
+  private readonly capitalizePipe = inject(CapitalizePipe)
 
   private readonly baseUrl = environment.apiBaseUrl
 
@@ -25,6 +29,26 @@ export class AuthService {
         finalize(() => {
           this.loaderService.hide()
         }),
+        catchError((error) => this.errorHandler(error)),
       )
+  }
+
+  private errorHandler(error: HttpErrorResponse): Observable<never> {
+    const message = error.error.message as string | string[] | undefined
+
+    if (message) {
+      this.notificationService.show(
+        this.capitalizePipe.transform(
+          Array.isArray(message) ? message.join(', ') : message,
+        ),
+      )
+    } else {
+      this.notificationService.show(
+        'An error occurred. Please try again later.',
+      )
+    }
+
+    const err = new Error()
+    return throwError(() => err)
   }
 }
