@@ -1,4 +1,8 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http'
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+} from '@angular/common/http'
 import { Injectable, computed, inject, signal } from '@angular/core'
 import { Observable, catchError, finalize, map, tap, throwError } from 'rxjs'
 import { environment } from '../../environments/environment'
@@ -6,6 +10,7 @@ import { API_ENDPOINTS } from '../constants/api-endpoints.constant'
 import { AUTH_STATUS } from '../constants/auth-status.constant'
 import { LoginResponse } from '../interfaces/login-response.interface'
 import { User } from '../interfaces/user.interface'
+import { parseJwt } from '../utils/parse-jwt.util'
 import { LoaderService } from './loader.service'
 import { NotificationService } from './notification.service'
 
@@ -21,6 +26,8 @@ export class AuthService {
   private readonly _currentUser = signal<User | null>(null)
   private readonly _authStatus = signal(AUTH_STATUS.CHECKING)
 
+  private refreshTimeout: number | null = null
+
   currentUser = computed(() => this._currentUser())
   authStatus = computed(() => this._authStatus())
 
@@ -35,17 +42,19 @@ export class AuthService {
   }
 
   refreshToken(): Observable<true> {
-    const token = localStorage.getItem('token')
     const refresh = localStorage.getItem('refresh')
 
-    if (!token || !refresh) {
+    if (!refresh) {
       this.logout()
       return throwError(() => new Error())
     }
 
+    const headers = new HttpHeaders({ refresh })
+
     return this.loginHandler(
       this.http.get<LoginResponse>(
         `${this.baseUrl}${API_ENDPOINTS.REFRESH_TOKEN}`,
+        { headers },
       ),
     )
   }
@@ -55,6 +64,8 @@ export class AuthService {
     this._currentUser.set(null)
     localStorage.removeItem('token')
     localStorage.removeItem('refresh')
+
+    this.cancelScheduledRefresh()
   }
 
   private authenticate({ token, refresh, ...user }: LoginResponse): void {
@@ -62,6 +73,25 @@ export class AuthService {
     this._currentUser.set(user)
     localStorage.setItem('token', token)
     localStorage.setItem('refresh', refresh)
+
+    this.scheduleRefresh(token)
+  }
+
+  private scheduleRefresh(token: string): void {
+    const { exp } = parseJwt(token)
+    this.refreshTimeout = setTimeout(
+      () => {
+        this.refreshToken().subscribe()
+      },
+      exp * 1000 - Date.now(),
+    ) as unknown as number
+  }
+
+  private cancelScheduledRefresh(): void {
+    if (this.refreshTimeout) {
+      clearTimeout(this.refreshTimeout)
+      this.refreshTimeout = null
+    }
   }
 
   private loginHandler(request: Observable<LoginResponse>): Observable<true> {

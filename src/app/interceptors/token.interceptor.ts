@@ -1,29 +1,14 @@
-import { HttpEvent, HttpInterceptorFn } from '@angular/common/http'
-import { Observable, catchError, throwError } from 'rxjs'
-import { API_ENDPOINTS } from '../constants/api-endpoints.constant'
+import { HttpInterceptorFn } from '@angular/common/http'
 import { TOKEN_URLS } from '../constants/token-urls.contant'
 
 export const tokenInterceptor: HttpInterceptorFn = (req, next) => {
-  const token = localStorage.getItem('token')
-  const refresh = localStorage.getItem('refresh')
+  const token = req.headers.get('refresh') ?? localStorage.getItem('token')
 
-  if (token && refresh && TOKEN_URLS.some((url) => req.url.includes(url))) {
-    return next(
-      req.clone({
-        setHeaders: { Authorization: `Bearer ${token}` },
-      }),
-    ).pipe(
-      catchError(
-        (): Observable<HttpEvent<unknown>> =>
-          req.url.includes(API_ENDPOINTS.REFRESH_TOKEN)
-            ? next(
-                req.clone({
-                  setHeaders: { Authorization: `Bearer ${refresh}` },
-                }),
-              )
-            : throwError(() => new Error()),
-      ),
-    )
+  if (token && TOKEN_URLS.some((url) => req.url.includes(url))) {
+    const headers = req.headers
+      .set('Authorization', `Bearer ${token}`)
+      .delete('refresh')
+    return next(req.clone({ headers }))
   }
 
   return next(req)
