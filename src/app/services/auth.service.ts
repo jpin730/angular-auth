@@ -42,6 +42,7 @@ export class AuthService {
         }),
         catchError((error) => {
           this._authStatus.set(AUTH_STATUS.NOT_AUTHENTICATED)
+          this._currentUser.set(null)
           return this.errorHandler(error)
         }),
         map(() => true),
@@ -54,6 +55,9 @@ export class AuthService {
 
     if (!token || !refresh) {
       this._authStatus.set(AUTH_STATUS.NOT_AUTHENTICATED)
+      this._currentUser.set(null)
+      localStorage.removeItem('token')
+      localStorage.removeItem('refresh')
       return throwError(() => new Error())
     }
 
@@ -73,6 +77,7 @@ export class AuthService {
         }),
         catchError((error) => {
           this._authStatus.set(AUTH_STATUS.NOT_AUTHENTICATED)
+          this._currentUser.set(null)
           localStorage.removeItem('token')
           localStorage.removeItem('refresh')
           return this.errorHandler(error)

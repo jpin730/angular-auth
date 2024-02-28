@@ -19,5 +19,6 @@ export const tokenInterceptor: HttpInterceptorFn = (req, next) => {
       }),
     )
   }
+
   return next(req)
 }
