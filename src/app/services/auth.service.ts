@@ -25,28 +25,13 @@ export class AuthService {
   authStatus = computed(() => this._authStatus())
 
   login(email: string, password: string): Observable<true> {
-    this.loader.show()
-    this.notification.hide()
     const body = { email, password }
-    return this.http
-      .post<LoginResponse>(`${this.baseUrl}${API_ENDPOINTS.LOGIN}`, body)
-      .pipe(
-        tap(({ token, refresh, ...user }) => {
-          this._authStatus.set(AUTH_STATUS.AUTHENTICATED)
-          this._currentUser.set(user)
-          localStorage.setItem('token', token)
-          localStorage.setItem('refresh', refresh)
-        }),
-        finalize(() => {
-          this.loader.hide()
-        }),
-        catchError((error) => {
-          this._authStatus.set(AUTH_STATUS.NOT_AUTHENTICATED)
-          this._currentUser.set(null)
-          return this.errorHandler(error)
-        }),
-        map(() => true),
-      )
+    return this.loginHandler(
+      this.http.post<LoginResponse>(
+        `${this.baseUrl}${API_ENDPOINTS.LOGIN}`,
+        body,
+      ),
+    )
   }
 
   refreshToken(): Observable<true> {
@@ -54,36 +39,47 @@ export class AuthService {
     const refresh = localStorage.getItem('refresh')
 
     if (!token || !refresh) {
-      this._authStatus.set(AUTH_STATUS.NOT_AUTHENTICATED)
-      this._currentUser.set(null)
-      localStorage.removeItem('token')
-      localStorage.removeItem('refresh')
+      this.logout()
       return throwError(() => new Error())
     }
 
+    return this.loginHandler(
+      this.http.get<LoginResponse>(
+        `${this.baseUrl}${API_ENDPOINTS.REFRESH_TOKEN}`,
+      ),
+    )
+  }
+
+  logout(): void {
+    this._authStatus.set(AUTH_STATUS.NOT_AUTHENTICATED)
+    this._currentUser.set(null)
+    localStorage.removeItem('token')
+    localStorage.removeItem('refresh')
+  }
+
+  private authenticate({ token, refresh, ...user }: LoginResponse): void {
+    this._authStatus.set(AUTH_STATUS.AUTHENTICATED)
+    this._currentUser.set(user)
+    localStorage.setItem('token', token)
+    localStorage.setItem('refresh', refresh)
+  }
+
+  private loginHandler(request: Observable<LoginResponse>): Observable<true> {
     this.loader.show()
     this.notification.hide()
-    return this.http
-      .get<LoginResponse>(`${this.baseUrl}${API_ENDPOINTS.REFRESH_TOKEN}`)
-      .pipe(
-        tap(({ token, refresh, ...user }) => {
-          this._authStatus.set(AUTH_STATUS.AUTHENTICATED)
-          this._currentUser.set(user)
-          localStorage.setItem('token', token)
-          localStorage.setItem('refresh', refresh)
-        }),
-        finalize(() => {
-          this.loader.hide()
-        }),
-        catchError((error) => {
-          this._authStatus.set(AUTH_STATUS.NOT_AUTHENTICATED)
-          this._currentUser.set(null)
-          localStorage.removeItem('token')
-          localStorage.removeItem('refresh')
-          return this.errorHandler(error)
-        }),
-        map(() => true),
-      )
+    return request.pipe(
+      tap((res) => {
+        this.authenticate(res)
+      }),
+      finalize(() => {
+        this.loader.hide()
+      }),
+      catchError((error) => {
+        this.logout()
+        return this.errorHandler(error)
+      }),
+      map(() => true),
+    )
   }
 
   private errorHandler(error: HttpErrorResponse): Observable<never> {
