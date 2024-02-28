@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common'
 import { Component, inject } from '@angular/core'
 import { fadeAnimation } from '../../animations/fade.animation'
 import { CapitalizePipe } from '../../pipes/capitalize.pipe'
@@ -7,16 +6,16 @@ import { NotificationService } from '../../services/notification.service'
 @Component({
   selector: 'app-notification',
   standalone: true,
-  imports: [CommonModule, CapitalizePipe],
+  imports: [CapitalizePipe],
   templateUrl: './notification.component.html',
   animations: [fadeAnimation()],
 })
 export class NotificationComponent {
-  private readonly notificationService = inject(NotificationService)
+  private readonly notification = inject(NotificationService)
 
-  message$ = this.notificationService.message$
+  message = this.notification.message
 
   hide(): void {
-    this.notificationService.hide()
+    this.notification.hide()
   }
 }

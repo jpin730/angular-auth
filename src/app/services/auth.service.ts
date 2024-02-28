@@ -14,8 +14,8 @@ import { NotificationService } from './notification.service'
 })
 export class AuthService {
   private readonly http = inject(HttpClient)
-  private readonly loaderService = inject(LoaderService)
-  private readonly notificationService = inject(NotificationService)
+  private readonly loader = inject(LoaderService)
+  private readonly notification = inject(NotificationService)
 
   private readonly baseUrl = environment.apiBaseUrl
   private readonly _currentUser = signal<User | null>(null)
@@ -25,8 +25,8 @@ export class AuthService {
   authStatus = computed(() => this._authStatus())
 
   login(email: string, password: string): Observable<true> {
-    this.loaderService.show()
-    this.notificationService.hide()
+    this.loader.show()
+    this.notification.hide()
     const body = { email, password }
     return this.http
       .post<LoginResponse>(`${this.baseUrl}${API_ENDPOINTS.LOGIN}`, body)
@@ -38,7 +38,7 @@ export class AuthService {
           localStorage.setItem('refresh', refresh)
         }),
         finalize(() => {
-          this.loaderService.hide()
+          this.loader.hide()
         }),
         catchError((error) => {
           this._authStatus.set(AUTH_STATUS.NOT_AUTHENTICATED)
@@ -61,8 +61,8 @@ export class AuthService {
       return throwError(() => new Error())
     }
 
-    this.loaderService.show()
-    this.notificationService.hide()
+    this.loader.show()
+    this.notification.hide()
     return this.http
       .get<LoginResponse>(`${this.baseUrl}${API_ENDPOINTS.REFRESH_TOKEN}`)
       .pipe(
@@ -73,7 +73,7 @@ export class AuthService {
           localStorage.setItem('refresh', refresh)
         }),
         finalize(() => {
-          this.loaderService.hide()
+          this.loader.hide()
         }),
         catchError((error) => {
           this._authStatus.set(AUTH_STATUS.NOT_AUTHENTICATED)
@@ -90,13 +90,11 @@ export class AuthService {
     const message = error.error.message as string | string[] | undefined
 
     if (message) {
-      this.notificationService.show(
+      this.notification.show(
         Array.isArray(message) ? message.join(', ') : message,
       )
     } else {
-      this.notificationService.show(
-        'An error occurred. Please try again later.',
-      )
+      this.notification.show('An error occurred. Please try again later.')
     }
     return throwError(() => new Error())
   }
