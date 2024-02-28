@@ -2,11 +2,12 @@ import { Component, inject } from '@angular/core'
 import { fadeAnimation } from '../../animations/fade.animation'
 import { CapitalizePipe } from '../../pipes/capitalize.pipe'
 import { NotificationService } from '../../services/notification.service'
+import { CloseSvgComponent } from '../../svgs/close-svg/close-svg.component'
 
 @Component({
   selector: 'app-notification',
   standalone: true,
-  imports: [CapitalizePipe],
+  imports: [CapitalizePipe, CloseSvgComponent],
   templateUrl: './notification.component.html',
   animations: [fadeAnimation()],
 })

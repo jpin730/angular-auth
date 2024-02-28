@@ -2,7 +2,7 @@ import { Component, HostListener, computed, inject } from '@angular/core'
 import { Router } from '@angular/router'
 import { PATH } from '../../constants/path.constant'
 import { AuthService } from '../../services/auth.service'
-import { ExpandMoreSvgComponent } from '../expand-more-svg/expand-more-svg.component'
+import { ExpandMoreSvgComponent } from '../../svgs/expand-more-svg/expand-more-svg.component'
 
 @Component({
   selector: 'app-user-dropdown',
