@@ -1,6 +1,7 @@
 import {
   AnimationTriggerMetadata,
   animate,
+  query,
   style,
   transition,
   trigger,
@@ -17,5 +18,21 @@ export const fadeAnimation = (
       animate(timingIn, style({ opacity: 1 })),
     ]),
     transition(':leave', [animate(timingOut, style({ opacity: 0 }))]),
+    transition('* <=> *', [
+      query(':enter', [style({ display: 'none' })], { optional: true }),
+      query(
+        ':leave',
+        [style({ opacity: 1 }), animate(timingOut, style({ opacity: 0 }))],
+        { optional: true },
+      ),
+      query(':leave', [style({ display: 'none' })], { optional: true }),
+      query(':enter', [style({ display: 'initial' })], { optional: true }),
+      query(':enter', [style({ opacity: 0 })], { optional: true }),
+      query(
+        ':enter',
+        [style({ opacity: 0 }), animate(timingIn, style({ opacity: 1 }))],
+        { optional: true },
+      ),
+    ]),
   ])
 }

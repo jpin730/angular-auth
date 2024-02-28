@@ -1,3 +1,5 @@
-<router-outlet />
+<main [@fade]="outlet.activatedRouteData">
+  <router-outlet #outlet="outlet" />
+</main>
 <app-loader />
 <app-notification />
