@@ -4,7 +4,7 @@
       class="flex items-center gap-x-1 hover:text-white-hover"
       (click)="dropdown.open = !dropdown.open"
     >
-      {{ user()?.name }}
+      {{ user()?.name | firstWord }}
       <app-expand-more-svg
         class="h-5 w-5 transition-transform"
         [class]="{ '-scale-y-100': dropdown.open }"

@@ -1,4 +1,5 @@
 import { Component, computed, inject } from '@angular/core'
+import { FirstWordPipe } from '../../pipes/first-word.pipe'
 import { AuthService } from '../../services/auth.service'
 import { ExpandMoreSvgComponent } from '../../svgs/expand-more-svg/expand-more-svg.component'
 import { DropdownComponent } from '../dropdown/dropdown.component'
@@ -6,7 +7,7 @@ import { DropdownComponent } from '../dropdown/dropdown.component'
 @Component({
   selector: 'app-user-dropdown',
   standalone: true,
-  imports: [ExpandMoreSvgComponent, DropdownComponent],
+  imports: [ExpandMoreSvgComponent, DropdownComponent, FirstWordPipe],
   templateUrl: './user-dropdown.component.html',
 })
 export class UserDropdownComponent {
