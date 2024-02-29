@@ -1,4 +1,6 @@
+import { HttpErrorResponse } from '@angular/common/http'
 import { Injectable, computed, signal } from '@angular/core'
+import { Observable, throwError } from 'rxjs'
 
 @Injectable({
   providedIn: 'root',
@@ -27,5 +29,16 @@ export class NotificationService {
   hide(): void {
     this._message.set('')
     clearTimeout(this.timeoutId)
+  }
+
+  httpErrorHandler(error: HttpErrorResponse): Observable<never> {
+    const message = error.error.message as string | string[] | undefined
+
+    if (message) {
+      this.show(Array.isArray(message) ? message.join(', ') : message)
+    } else {
+      this.show('An error occurred. Please try again later.')
+    }
+    return throwError(() => new Error())
   }
 }

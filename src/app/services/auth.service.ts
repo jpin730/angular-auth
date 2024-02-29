@@ -1,8 +1,4 @@
-import {
-  HttpClient,
-  HttpErrorResponse,
-  HttpHeaders,
-} from '@angular/common/http'
+import { HttpClient, HttpHeaders } from '@angular/common/http'
 import { Injectable, computed, inject, signal } from '@angular/core'
 import { Router } from '@angular/router'
 import { Observable, catchError, finalize, map, tap, throwError } from 'rxjs'
@@ -110,22 +106,9 @@ export class AuthService {
       }),
       catchError((error) => {
         this.logout()
-        return this.errorHandler(error)
+        return this.notification.httpErrorHandler(error)
       }),
       map(() => true),
     )
-  }
-
-  private errorHandler(error: HttpErrorResponse): Observable<never> {
-    const message = error.error.message as string | string[] | undefined
-
-    if (message) {
-      this.notification.show(
-        Array.isArray(message) ? message.join(', ') : message,
-      )
-    } else {
-      this.notification.show('An error occurred. Please try again later.')
-    }
-    return throwError(() => new Error())
   }
 }
