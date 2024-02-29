@@ -4,10 +4,12 @@ import {
   HttpHeaders,
 } from '@angular/common/http'
 import { Injectable, computed, inject, signal } from '@angular/core'
+import { Router } from '@angular/router'
 import { Observable, catchError, finalize, map, tap, throwError } from 'rxjs'
 import { environment } from '../../environments/environment'
 import { API_ENDPOINTS } from '../constants/api-endpoints.constant'
 import { AUTH_STATUS } from '../constants/auth-status.constant'
+import { PATH } from '../constants/path.constant'
 import { LoginResponse } from '../interfaces/login-response.interface'
 import { User } from '../interfaces/user.interface'
 import { parseJwt } from '../utils/parse-jwt.util'
@@ -19,6 +21,7 @@ import { NotificationService } from './notification.service'
 })
 export class AuthService {
   private readonly http = inject(HttpClient)
+  private readonly router = inject(Router)
   private readonly loader = inject(LoaderService)
   private readonly notification = inject(NotificationService)
 
@@ -66,6 +69,7 @@ export class AuthService {
     localStorage.removeItem('refresh')
 
     this.cancelScheduledRefresh()
+    this.router.navigate([`/${PATH.LOGIN}`])
   }
 
   private authenticate({ token, refresh, ...user }: LoginResponse): void {

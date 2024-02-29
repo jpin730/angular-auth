@@ -4,21 +4,23 @@
     <app-expand-more-svg class="h-5 w-5" />
   </button>
 
-  <div
-    class="absolute right-0 top-full z-10 divide-y border bg-white text-sm text-gray-900 shadow"
-    [class.hidden]="!open"
-  >
-    <div class="min-w-52 px-4 py-2">
-      <p>
-        <strong>{{ user()?.name }}</strong>
-      </p>
-      <p class="text-gray-500">{{ user()?.email }}</p>
-    </div>
-    <button
-      class="w-full px-4 py-2 text-red-600 hover:bg-gray-50"
-      (click)="logout()"
+  @if (open) {
+    <div
+      @fade
+      class="absolute right-0 top-full z-10 divide-y border bg-white text-sm text-gray-900 shadow"
     >
-      Logout
-    </button>
-  </div>
+      <div class="min-w-52 px-4 py-2">
+        <p>
+          <strong>{{ user()?.name }}</strong>
+        </p>
+        <p class="text-gray-500">{{ user()?.email }}</p>
+      </div>
+      <button
+        class="w-full px-4 py-2 text-red-600 hover:bg-gray-50"
+        (click)="logout()"
+      >
+        Logout
+      </button>
+    </div>
+  }
 </div>
