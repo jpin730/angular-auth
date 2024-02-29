@@ -1,7 +1,9 @@
+import { ROLE } from '../constants/role.constant'
+
 export interface User {
   _id: string
   email: string
   name: string
   isActive: boolean
-  role: string
+  role: ROLE
 }
