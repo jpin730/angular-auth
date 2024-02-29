@@ -6,11 +6,11 @@ import {
   transition,
   trigger,
 } from '@angular/animations'
-import { FADE_TIME } from '../constants/fade-time.constant'
+import { FADE_IN_TIME, FADE_OUT_TIME } from '../constants/fade-time.constant'
 
 export const fadeAnimation = (
-  timingIn = FADE_TIME,
-  timingOut = FADE_TIME,
+  timingIn = FADE_IN_TIME,
+  timingOut = FADE_OUT_TIME,
 ): AnimationTriggerMetadata => {
   return trigger('fade', [
     transition(':enter', [
