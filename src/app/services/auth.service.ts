@@ -40,6 +40,16 @@ export class AuthService {
     )
   }
 
+  register(email: string, name: string, password: string): Observable<true> {
+    const body = { email, name, password }
+    return this.loginHandler(
+      this.http.post<LoginResponse>(
+        `${this.baseUrl}${API_ENDPOINTS.REGISTER}`,
+        body,
+      ),
+    )
+  }
+
   refreshToken(): Observable<true> {
     const refresh = localStorage.getItem('refresh')
 
@@ -65,7 +75,9 @@ export class AuthService {
     localStorage.removeItem('refresh')
 
     this.cancelScheduledRefresh()
-    this.router.navigate([`/${PATH.LOGIN}`])
+    if (!this.router.url.includes(PATH.REGISTER)) {
+      this.router.navigate([`/${PATH.LOGIN}`])
+    }
   }
 
   private authenticate({ token, refresh, ...user }: LoginResponse): void {
@@ -75,6 +87,8 @@ export class AuthService {
     localStorage.setItem('refresh', refresh)
 
     this.scheduleRefresh(token)
+
+    this.router.navigate([`/${PATH.HOME}`])
   }
 
   private scheduleRefresh(token: string): void {
