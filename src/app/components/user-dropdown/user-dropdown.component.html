@@ -1,10 +1,10 @@
 <app-dropdown #dropdown>
   <ng-container trigger>
     <button
-      class="flex items-center gap-x-1 hover:text-white-hover"
+      class="btn btn-primary flex items-center gap-x-1"
       (click)="dropdown.open = !dropdown.open"
     >
-      {{ user()?.name | firstWord }}
+      {{ user()?.name | firstWord | titlecase }}
       <app-expand-more-svg
         class="h-5 w-5 transition-transform"
         [class]="{ '-scale-y-100': dropdown.open }"

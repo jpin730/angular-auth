@@ -1,12 +1,12 @@
-<ul class="divide-y divide-gray-100">
+<ul class="divide-y">
   @for (user of users$ | async; track user._id) {
     <li class="flex gap-x-6 py-5">
-      <div class="flex min-w-0 gap-x-4">
-        <div class="min-w-0 flex-auto">
-          <p class="text-sm font-semibold leading-6 text-gray-900">
+      <div class="flex gap-x-4">
+        <div class="flex-auto">
+          <p class="font-semibold text-gray-dark">
             {{ user.name }}
           </p>
-          <p class="mt-1 truncate text-xs leading-5 text-gray-500">
+          <p class="mt-1 truncate text-sm text-gray-light">
             {{ user.email }}
           </p>
         </div>
@@ -15,7 +15,7 @@
       <span class="flex-grow"></span>
 
       <div class="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
-        <p class="text-sm leading-6 text-gray-900">
+        <p class="text-sm text-gray-dark">
           {{ user.role | role }}
         </p>
         <app-user-status [isActive]="user.isActive" />

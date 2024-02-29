@@ -1,3 +1,4 @@
+import { TitleCasePipe } from '@angular/common'
 import { Component, computed, inject } from '@angular/core'
 import { FirstWordPipe } from '../../pipes/first-word.pipe'
 import { AuthService } from '../../services/auth.service'
@@ -7,7 +8,12 @@ import { DropdownComponent } from '../dropdown/dropdown.component'
 @Component({
   selector: 'app-user-dropdown',
   standalone: true,
-  imports: [ExpandMoreSvgComponent, DropdownComponent, FirstWordPipe],
+  imports: [
+    DropdownComponent,
+    ExpandMoreSvgComponent,
+    FirstWordPipe,
+    TitleCasePipe,
+  ],
   templateUrl: './user-dropdown.component.html',
 })
 export class UserDropdownComponent {
