@@ -1,29 +1,29 @@
-<div class="relative">
-  <button class="flex items-center gap-x-1" (click)="toggleDropdown()">
-    {{ user()?.name }}
-    <app-expand-more-svg
-      class="h-5 w-5 transition-transform"
-      [class]="{ '-scale-y-100': open }"
-    />
-  </button>
-
-  @if (open) {
-    <div
-      @fade
-      class="absolute right-0 top-full z-10 divide-y border bg-white text-sm text-gray-dark shadow"
+<app-dropdown #dropdown>
+  <ng-container trigger>
+    <button
+      class="flex items-center gap-x-1 hover:text-white-hover"
+      (click)="dropdown.open = !dropdown.open"
     >
-      <div class="min-w-52 px-4 py-2">
-        <p>
-          <strong>{{ user()?.name }}</strong>
-        </p>
-        <p class="text-gray-light">{{ user()?.email }}</p>
-      </div>
-      <button
-        class="w-full px-4 py-2 text-red hover:bg-white-hover"
-        (click)="logout()"
-      >
-        Logout
-      </button>
+      {{ user()?.name }}
+      <app-expand-more-svg
+        class="h-5 w-5 transition-transform"
+        [class]="{ '-scale-y-100': dropdown.open }"
+      />
+    </button>
+  </ng-container>
+
+  <ng-container menu>
+    <div class="min-w-52 px-4 py-2">
+      <p>
+        <strong>{{ user()?.name }}</strong>
+      </p>
+      <p class="text-gray-light">{{ user()?.email }}</p>
     </div>
-  }
-</div>
+    <button
+      class="w-full px-4 py-2 text-red hover:bg-white-hover"
+      (click)="logout()"
+    >
+      Logout
+    </button>
+  </ng-container>
+</app-dropdown>

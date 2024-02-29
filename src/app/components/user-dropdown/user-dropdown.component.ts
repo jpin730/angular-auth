@@ -1,41 +1,20 @@
-import { Component, HostListener, computed, inject } from '@angular/core'
-import { fadeAnimation } from '../../animations/fade.animation'
+import { Component, computed, inject } from '@angular/core'
 import { AuthService } from '../../services/auth.service'
 import { ExpandMoreSvgComponent } from '../../svgs/expand-more-svg/expand-more-svg.component'
+import { DropdownComponent } from '../dropdown/dropdown.component'
 
 @Component({
   selector: 'app-user-dropdown',
   standalone: true,
-  imports: [ExpandMoreSvgComponent],
+  imports: [ExpandMoreSvgComponent, DropdownComponent],
   templateUrl: './user-dropdown.component.html',
-  animations: [fadeAnimation()],
 })
 export class UserDropdownComponent {
   private readonly authService = inject(AuthService)
 
-  private hostClicked = false
-
-  @HostListener('click')
-  hostClick(): void {
-    this.hostClicked = true
-  }
-
-  @HostListener('document:click', ['$event'])
-  documentClick(): void {
-    if (this.open && !this.hostClicked) {
-      this.open = false
-    }
-    this.hostClicked = false
-  }
-
   user = computed(() => this.authService.currentUser())
-  open = false
 
   logout(): void {
     this.authService.logout()
-  }
-
-  toggleDropdown(): void {
-    this.open = !this.open
   }
 }
