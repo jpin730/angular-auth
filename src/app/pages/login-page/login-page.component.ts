@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core'
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms'
-import { RouterModule } from '@angular/router'
+import { Router, RouterModule } from '@angular/router'
 import { ControlErrorsComponent } from '../../components/control-errors/control-errors.component'
 import { PATH } from '../../constants/path.constant'
 import { AuthService } from '../../services/auth.service'
@@ -14,6 +14,7 @@ import { AuthService } from '../../services/auth.service'
 export default class LoginPageComponent {
   private readonly fb = inject(FormBuilder)
   private readonly authService = inject(AuthService)
+  private readonly router = inject(Router)
 
   PATH = PATH
 
@@ -30,6 +31,8 @@ export default class LoginPageComponent {
 
     const { email, password } = this.loginForm.getRawValue()
 
-    this.authService.login(email, password).subscribe()
+    this.authService
+      .login(email, password)
+      .subscribe(() => this.router.navigate([`/${PATH.HOME}`]))
   }
 }

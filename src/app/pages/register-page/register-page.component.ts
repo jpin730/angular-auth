@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core'
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms'
-import { RouterLink } from '@angular/router'
+import { Router, RouterLink } from '@angular/router'
 import { ControlErrorsComponent } from '../../components/control-errors/control-errors.component'
 import { PATH } from '../../constants/path.constant'
 import { AuthService } from '../../services/auth.service'
@@ -14,12 +14,13 @@ import { AuthService } from '../../services/auth.service'
 export default class RegisterPageComponent {
   private readonly fb = inject(FormBuilder)
   private readonly authService = inject(AuthService)
+  private readonly router = inject(Router)
 
   PATH = PATH
 
   registerForm = this.fb.nonNullable.group({
     email: ['user@email.com', [Validators.required, Validators.email]],
-    name: ['Jane Smith', [Validators.required]],
+    name: ['Jane Smith', [Validators.required, Validators.minLength(4)]],
     password: ['123456', [Validators.required, Validators.minLength(6)]],
   })
 
@@ -31,6 +32,8 @@ export default class RegisterPageComponent {
 
     const { email, name, password } = this.registerForm.getRawValue()
 
-    this.authService.register(email, name, password).subscribe()
+    this.authService
+      .register(email, name, password)
+      .subscribe(() => this.router.navigate([`/${PATH.HOME}`]))
   }
 }

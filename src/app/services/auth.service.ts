@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http'
 import { Injectable, computed, inject, signal } from '@angular/core'
 import { Router } from '@angular/router'
-import { Observable, catchError, finalize, map, tap, throwError } from 'rxjs'
+import { Observable, catchError, finalize, tap, throwError } from 'rxjs'
 import { environment } from '../../environments/environment'
 import { API_ENDPOINTS } from '../constants/api-endpoints.constant'
 import { AUTH_STATUS } from '../constants/auth-status.constant'
@@ -30,7 +30,7 @@ export class AuthService {
   currentUser = computed(() => this._currentUser())
   authStatus = computed(() => this._authStatus())
 
-  login(email: string, password: string): Observable<true> {
+  login(email: string, password: string): Observable<LoginResponse> {
     const body = { email, password }
     return this.loginHandler(
       this.http.post<LoginResponse>(
@@ -40,7 +40,11 @@ export class AuthService {
     )
   }
 
-  register(email: string, name: string, password: string): Observable<true> {
+  register(
+    email: string,
+    name: string,
+    password: string,
+  ): Observable<LoginResponse> {
     const body = { email, name, password }
     return this.loginHandler(
       this.http.post<LoginResponse>(
@@ -50,7 +54,7 @@ export class AuthService {
     )
   }
 
-  refreshToken(): Observable<true> {
+  refreshToken(): Observable<LoginResponse> {
     const refresh = localStorage.getItem('refresh')
 
     if (!refresh) {
@@ -75,9 +79,6 @@ export class AuthService {
     localStorage.removeItem('refresh')
 
     this.cancelScheduledRefresh()
-    if (!this.router.url.includes(PATH.REGISTER)) {
-      this.router.navigate([`/${PATH.LOGIN}`])
-    }
   }
 
   private authenticate({ token, refresh, ...user }: LoginResponse): void {
@@ -87,15 +88,18 @@ export class AuthService {
     localStorage.setItem('refresh', refresh)
 
     this.scheduleRefresh(token)
-
-    this.router.navigate([`/${PATH.HOME}`])
   }
 
   private scheduleRefresh(token: string): void {
     const { exp } = parseJwt(token)
     this.refreshTimeout = setTimeout(
       () => {
-        this.refreshToken().subscribe()
+        this.refreshToken().subscribe({
+          error: () => {
+            this.logout()
+            this.router.navigate([`/${PATH.LOGIN}`])
+          },
+        })
       },
       exp * 1000 - Date.now(),
     ) as unknown as number
@@ -108,7 +112,9 @@ export class AuthService {
     }
   }
 
-  private loginHandler(request: Observable<LoginResponse>): Observable<true> {
+  private loginHandler(
+    request: Observable<LoginResponse>,
+  ): Observable<LoginResponse> {
     this.loader.show()
     this.notification.hide()
     return request.pipe(
@@ -122,7 +128,6 @@ export class AuthService {
         this.logout()
         return this.notification.httpErrorHandler(error)
       }),
-      map(() => true),
     )
   }
 }
