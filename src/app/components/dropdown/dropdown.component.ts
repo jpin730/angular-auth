@@ -1,4 +1,4 @@
-import { Component, HostListener } from '@angular/core'
+import { Component, HostListener, Input, booleanAttribute } from '@angular/core'
 import { fadeAnimation } from '../../animations/fade.animation'
 
 @Component({
@@ -8,6 +8,8 @@ import { fadeAnimation } from '../../animations/fade.animation'
   animations: [fadeAnimation()],
 })
 export class DropdownComponent {
+  @Input({ transform: booleanAttribute }) centered = false
+
   private hostClicked = false
 
   open = false

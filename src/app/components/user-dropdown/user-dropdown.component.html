@@ -1,7 +1,7 @@
 <app-dropdown #dropdown>
   <ng-container trigger>
     <button
-      class="btn btn-primary flex items-center gap-x-1"
+      class="btn btn-primary flex items-center gap-x-1 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
       (click)="dropdown.open = !dropdown.open"
     >
       {{ user()?.name | firstWord | titlecase }}
@@ -20,7 +20,7 @@
       <p class="text-gray-light">{{ user()?.email }}</p>
     </div>
     <button
-      class="w-full px-4 py-2 text-red hover:bg-white-hover"
+      class="w-full py-2 text-red hover:bg-white-hover"
       (click)="logout()"
     >
       Logout

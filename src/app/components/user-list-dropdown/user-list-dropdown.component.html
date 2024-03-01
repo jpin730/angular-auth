@@ -1,0 +1,17 @@
+<app-dropdown #dropdown centered>
+  <ng-container trigger>
+    <button
+      class="rounded-full p-2 hover:bg-white-hover"
+      (click)="dropdown.open = !dropdown.open"
+    >
+      <app-more-vert-svg class="block h-5 w-5 text-gray-light" />
+    </button>
+  </ng-container>
+
+  <ng-container menu>
+    <div class="min-w-32 py-2">
+      <button class="w-full py-2 hover:bg-white-hover">Update</button>
+      <button class="w-full py-2 text-red hover:bg-white-hover">Delete</button>
+    </div>
+  </ng-container>
+</app-dropdown>

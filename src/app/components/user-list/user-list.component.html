@@ -1,6 +1,6 @@
 <ul class="divide-y">
   @for (user of users$ | async; track user._id) {
-    <li class="flex gap-x-6 py-5">
+    <li class="flex gap-x-2 py-5">
       <div class="flex gap-x-4">
         <div class="flex-auto">
           <p class="font-semibold text-gray-dark">
@@ -20,6 +20,8 @@
         </p>
         <app-user-status [isActive]="user.isActive" />
       </div>
+
+      <app-user-list-dropdown />
     </li>
   }
 </ul>

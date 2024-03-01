@@ -5,7 +5,8 @@
     <div
       menu
       @fade
-      class="absolute right-0 top-full z-10 divide-y border bg-white text-sm text-gray-dark shadow"
+      class="absolute top-full z-10 border bg-white text-sm text-gray-dark shadow"
+      [class]="centered ? 'right-1/2' : 'right-0'"
     >
       <ng-content select="[menu]" />
     </div>
