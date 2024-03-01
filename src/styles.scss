@@ -15,7 +15,7 @@ body {
 }
 
 .btn {
-  @apply rounded-md px-4 py-2 text-sm font-semibold shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2;
+  @apply rounded-md px-4 py-2 text-sm font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2;
 }
 
 .btn.btn-primary {
@@ -23,7 +23,7 @@ body {
 }
 
 .btn.btn-secondary {
-  @apply bg-white text-gray-dark ring-1 ring-inset ring-gray-light hover:bg-white-hover;
+  @apply border bg-white text-gray-dark hover:bg-white-hover;
 }
 
 .link {
