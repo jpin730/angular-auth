@@ -1,6 +1,6 @@
 # Angular Auth
 
-This app is a simple example of how to use the Angular framework to create a simple authentication system. It uses the Angular Router to navigate between the login and home pages, and the Angular HttpClient to make requests to an API builded with NestJS that uses JWT.
+This app is a user authentication system manager developed with Angular 17 using standalone components, signals, new control flow syntax, content projection and dynamic component loader. It connects to an API builded with NestJS that uses JWT.
 
 ## Prepare environment
 
