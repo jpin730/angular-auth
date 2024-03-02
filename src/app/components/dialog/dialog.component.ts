@@ -1,5 +1,6 @@
 import { NgComponentOutlet } from '@angular/common'
 import { Component, computed, inject } from '@angular/core'
+import { fadeAnimation } from '../../animations/fade.animation'
 import { DialogService } from '../../services/dialog.service'
 
 @Component({
@@ -7,6 +8,7 @@ import { DialogService } from '../../services/dialog.service'
   standalone: true,
   imports: [NgComponentOutlet],
   templateUrl: './dialog.component.html',
+  animations: [fadeAnimation()],
 })
 export class DialogComponent {
   private readonly dialog = inject(DialogService)
@@ -16,9 +18,5 @@ export class DialogComponent {
 
   close(): void {
     this.dialog.close()
-  }
-
-  noClose(event: Event): void {
-    event.stopPropagation()
   }
 }
