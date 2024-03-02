@@ -1,11 +1,13 @@
 <div class="flex items-center justify-between py-5">
   <h2 class="text-xl font-semibold">User List</h2>
 
-  <button class="btn btn-secondary">Create user</button>
+  <button class="btn btn-secondary" (click)="openUserEditor()">
+    Create user
+  </button>
 </div>
 
 <ul class="divide-y">
-  @for (user of users$ | async; track user._id) {
+  @for (user of users(); track user._id) {
     <li class="flex gap-x-2 py-5">
       <div class="flex gap-x-4">
         <div class="flex-auto">
