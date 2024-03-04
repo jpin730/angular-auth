@@ -18,9 +18,9 @@ import { NotificationComponent } from './components/notification/notification.co
     <div [@fade]="outlet.activatedRouteData">
       <router-outlet #outlet="outlet" />
     </div>
-    <app-loader />
-    <app-notification />
     <app-dialog />
+    <app-notification />
+    <app-loader />
   `,
   animations: [fadeAnimation()],
 })

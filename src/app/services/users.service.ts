@@ -34,4 +34,19 @@ export class UsersService {
       catchError((error) => this.notification.httpErrorHandler(error)),
     )
   }
+
+  createUser(email: string, name: string, password: string): Observable<User> {
+    const body = { email, name, password }
+    this.loader.show()
+    this.notification.hide()
+    return this.http.post<User>(`${this.baseUrl}`, body).pipe(
+      tap((newUser) => {
+        this._users.set([...this._users(), newUser])
+      }),
+      finalize(() => {
+        this.loader.hide()
+      }),
+      catchError((error) => this.notification.httpErrorHandler(error)),
+    )
+  }
 }
