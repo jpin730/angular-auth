@@ -1,0 +1,17 @@
+<div>
+  <p class="mb-8">{{ message || 'Are you sure?' }}</p>
+
+  <div class="flex justify-end gap-x-4">
+    <button type="button" class="btn btn-secondary w-24" (click)="close(false)">
+      No
+    </button>
+    <button
+      type="submit"
+      class="btn w-24"
+      [class]="warn ? 'btn-warn' : 'btn-primary'"
+      (click)="close(true)"
+    >
+      Yes
+    </button>
+  </div>
+</div>

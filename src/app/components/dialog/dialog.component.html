@@ -13,7 +13,7 @@
           class="rounded-md border bg-white p-4 shadow"
           (click)="$event.stopPropagation()"
         >
-          <div *ngComponentOutlet="component()"></div>
+          <div *ngComponentOutlet="component(); inputs: inputs()"></div>
         </div>
       </div>
     </div>

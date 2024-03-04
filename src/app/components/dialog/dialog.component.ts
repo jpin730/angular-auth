@@ -14,6 +14,7 @@ export class DialogComponent {
   private readonly dialog = inject(DialogService)
 
   component = computed(() => this.dialog.component())
+  inputs = computed(() => this.dialog.inputs())
   open = computed(() => !!this.component())
 
   close(): void {
