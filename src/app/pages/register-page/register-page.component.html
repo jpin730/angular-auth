@@ -7,7 +7,7 @@
     >
       <label class="form-field">
         Email
-        <input type="text" formControlName="email" />
+        <input appTrimOnBlur type="text" formControlName="email" />
         <app-control-errors
           [errors]="registerForm.controls.email.errors"
           [touched]="registerForm.controls.email.touched"
@@ -16,7 +16,7 @@
 
       <label class="form-field">
         Name
-        <input type="text" formControlName="name" />
+        <input appTrimOnBlur type="text" formControlName="name" />
         <app-control-errors
           [errors]="registerForm.controls.name.errors"
           [touched]="registerForm.controls.name.touched"
@@ -25,7 +25,7 @@
 
       <label class="form-field">
         Password
-        <input type="password" formControlName="password" />
+        <input appTrimOnBlur type="password" formControlName="password" />
         <app-control-errors
           [errors]="registerForm.controls.password.errors"
           [touched]="registerForm.controls.password.touched"

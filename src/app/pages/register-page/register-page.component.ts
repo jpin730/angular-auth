@@ -3,12 +3,18 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms'
 import { Router, RouterLink } from '@angular/router'
 import { ControlErrorsComponent } from '../../components/control-errors/control-errors.component'
 import { PATH } from '../../constants/path.constant'
+import { TrimOnBlurDirective } from '../../directives/trim-on-blur.directive'
 import { AuthService } from '../../services/auth.service'
 
 @Component({
   selector: 'app-register-page',
   standalone: true,
-  imports: [RouterLink, ReactiveFormsModule, ControlErrorsComponent],
+  imports: [
+    ControlErrorsComponent,
+    ReactiveFormsModule,
+    RouterLink,
+    TrimOnBlurDirective,
+  ],
   templateUrl: './register-page.component.html',
 })
 export default class RegisterPageComponent {
