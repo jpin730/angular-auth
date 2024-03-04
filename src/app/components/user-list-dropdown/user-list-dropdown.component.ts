@@ -20,7 +20,7 @@ export class UserListDropdownComponent {
   @Input({ required: true }) user!: User
 
   onUpdate(): void {
-    this.dialog.open(UserEditorComponent)
+    this.dialog.open(UserEditorComponent, { user: this.user })
   }
 
   onDelete(): void {

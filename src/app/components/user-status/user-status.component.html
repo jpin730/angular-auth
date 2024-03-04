@@ -1,15 +1,17 @@
-<div class="mt-1 flex items-center gap-x-1.5">
-  <p class="text-sm text-gray-light">
+<div class="flex items-center gap-x-1.5">
+  <p class="text-sm">
     {{ isActive ? 'Active' : 'Inactive' }}
   </p>
 
-  <div
-    class="flex-none rounded-full p-1"
-    [class]="isActive ? 'bg-green/20' : 'bg-red/20'"
-  >
+  @if (!onlyText) {
     <div
-      class="h-1.5 w-1.5 rounded-full bg-green"
-      [class]="isActive ? 'bg-green' : 'bg-red'"
-    ></div>
-  </div>
+      class="flex-none rounded-full p-1"
+      [class]="isActive ? 'bg-green/20' : 'bg-red/20'"
+    >
+      <div
+        class="h-1.5 w-1.5 rounded-full bg-green"
+        [class]="isActive ? 'bg-green' : 'bg-red'"
+      ></div>
+    </div>
+  }
 </div>

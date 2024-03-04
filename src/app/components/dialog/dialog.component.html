@@ -1,18 +1,10 @@
 <!-- eslint-disable @angular-eslint/template/interactive-supports-focus -->
 <!-- eslint-disable @angular-eslint/template/click-events-have-key-events -->
 @if (open()) {
-  <dialog
-    open
-    @fade
-    class="left-0 top-0 z-40 m-0 h-dvh w-dvw bg-black/50"
-    (click)="close()"
-  >
+  <dialog open @fade class="left-0 top-0 z-40 m-0 h-dvh w-dvw bg-black/50">
     <div class="flex h-full w-full">
       <div class="m-auto w-full max-w-sm px-4">
-        <div
-          class="rounded-md border bg-white p-4 shadow"
-          (click)="$event.stopPropagation()"
-        >
+        <div class="rounded-md border bg-white p-4 shadow">
           <div *ngComponentOutlet="component(); inputs: inputs()"></div>
         </div>
       </div>

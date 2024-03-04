@@ -23,10 +23,10 @@
       <span class="flex-grow"></span>
 
       <div class="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
-        <p class="text-sm text-gray-dark">
+        <p class="mb-1 text-sm text-gray-dark">
           {{ user.role | role }}
         </p>
-        <app-user-status [isActive]="user.isActive" />
+        <app-user-status class="text-gray-light" [isActive]="user.isActive" />
       </div>
 
       <app-user-list-dropdown [user]="user" />

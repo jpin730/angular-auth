@@ -1,14 +1,14 @@
 <form
   class="flex flex-col gap-y-4"
-  [formGroup]="registerForm"
+  [formGroup]="userForm"
   (ngSubmit)="onSubmit()"
 >
   <label class="form-field">
     Email
     <input appTrimOnBlur type="text" formControlName="email" />
     <app-control-errors
-      [errors]="registerForm.controls.email.errors"
-      [touched]="registerForm.controls.email.touched"
+      [errors]="userForm.controls.email.errors"
+      [touched]="userForm.controls.email.touched"
     />
   </label>
 
@@ -16,8 +16,8 @@
     Name
     <input appTrimOnBlur type="text" formControlName="name" />
     <app-control-errors
-      [errors]="registerForm.controls.name.errors"
-      [touched]="registerForm.controls.name.touched"
+      [errors]="userForm.controls.name.errors"
+      [touched]="userForm.controls.name.touched"
     />
   </label>
 
@@ -25,15 +25,40 @@
     Password
     <input appTrimOnBlur type="password" formControlName="password" />
     <app-control-errors
-      [errors]="registerForm.controls.password.errors"
-      [touched]="registerForm.controls.password.touched"
+      [errors]="userForm.controls.password.errors"
+      [touched]="userForm.controls.password.touched"
     />
   </label>
+
+  @if (editMode) {
+    <label class="form-field">
+      Role
+      <select class="cursor-pointer" formControlName="role">
+        @for (role of USER_ROLES; track role) {
+          <option [value]="role">{{ role | role }}</option>
+        }
+      </select>
+    </label>
+
+    <label class="flex w-fit cursor-pointer gap-x-2">
+      <input type="checkbox" formControlName="isActive" />
+      <app-user-status
+        onlyText
+        [isActive]="this.userForm.controls.isActive.value"
+      />
+    </label>
+  }
 
   <div class="flex justify-end gap-x-4">
     <button type="button" class="btn btn-secondary w-24" (click)="close()">
       Cancel
     </button>
-    <button type="submit" class="btn btn-primary w-24">Save</button>
+    <button
+      type="submit"
+      class="btn btn-primary w-24"
+      [disabled]="editMode && userForm.pristine"
+    >
+      Save
+    </button>
   </div>
 </form>

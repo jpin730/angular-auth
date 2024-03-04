@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core'
+import { Component, Input, booleanAttribute } from '@angular/core'
 
 @Component({
   selector: 'app-user-status',
@@ -8,4 +8,5 @@ import { Component, Input } from '@angular/core'
 export class UserStatusComponent {
   @Input({ required: true })
   isActive = false
+  @Input({ transform: booleanAttribute }) onlyText = false
 }

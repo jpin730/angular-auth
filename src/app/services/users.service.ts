@@ -50,6 +50,22 @@ export class UsersService {
     )
   }
 
+  updateUser({ _id, ...user }: User): Observable<User> {
+    this.loader.show()
+    this.notification.hide()
+    return this.http.patch<User>(`${this.baseUrl}/${_id}`, user).pipe(
+      tap((updatedUser) => {
+        this._users.set(
+          this._users().map((user) => (user._id === _id ? updatedUser : user)),
+        )
+      }),
+      finalize(() => {
+        this.loader.hide()
+      }),
+      catchError((error) => this.notification.httpErrorHandler(error)),
+    )
+  }
+
   deleteUser(id: string): Observable<User> {
     this.loader.show()
     this.notification.hide()
