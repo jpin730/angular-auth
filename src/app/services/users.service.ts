@@ -49,4 +49,18 @@ export class UsersService {
       catchError((error) => this.notification.httpErrorHandler(error)),
     )
   }
+
+  deleteUser(id: string): Observable<User> {
+    this.loader.show()
+    this.notification.hide()
+    return this.http.delete<User>(`${this.baseUrl}/${id}`).pipe(
+      tap(() => {
+        this._users.set(this._users().filter((user) => user._id !== id))
+      }),
+      finalize(() => {
+        this.loader.hide()
+      }),
+      catchError((error) => this.notification.httpErrorHandler(error)),
+    )
+  }
 }

@@ -10,8 +10,15 @@
 
   <ng-container menu>
     <div class="min-w-32 py-2">
-      <button class="w-full py-2 hover:bg-white-hover">Update</button>
-      <button class="w-full py-2 text-red hover:bg-white-hover">Delete</button>
+      <button class="w-full py-2 hover:bg-white-hover" (click)="onUpdate()">
+        Update
+      </button>
+      <button
+        class="w-full py-2 text-red hover:bg-white-hover"
+        (click)="onDelete()"
+      >
+        Delete
+      </button>
     </div>
   </ng-container>
 </app-dropdown>
