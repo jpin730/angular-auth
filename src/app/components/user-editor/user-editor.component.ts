@@ -45,7 +45,8 @@ export class UserEditorComponent implements OnInit {
 
     if (this.user) {
       this.userForm.patchValue(this.user)
-      this.userForm.markAsPristine()
+      this.userForm.controls.password.setValue('')
+      this.userForm.controls.password.removeValidators(Validators.required)
     }
   }
 
@@ -60,9 +61,12 @@ export class UserEditorComponent implements OnInit {
     }
 
     if (this.editMode) {
+      const { password, ...rest } = this.userForm.getRawValue()
+
       const user = {
-        ...this.userForm.getRawValue(),
+        ...rest,
         _id: this.user?._id as string,
+        password: this.userForm.controls.password.dirty ? password : undefined,
       }
 
       this.usersService.updateUser(user).subscribe(() => {
