@@ -22,10 +22,6 @@ This project uses [Husky](https://typicode.github.io/husky) to run some checks b
 
 - Linting and formatting code on commit.
 
-## Deployment
+## Backend Repository
 
-App deployed on: <https://angular-auth-jpin730.vercel.app>
-
-API deployment: <https://nest-auth-9jfg.onrender.com>
-
-API repository: <https://github.com/jpin730/nest-auth>
+<https://github.com/jpin730/nest-auth>
